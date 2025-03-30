@@ -16,16 +16,16 @@ VECTORSTORE_PATH = "vectorstore.index"
 
 def get_pdf_text(pdf_docs):
     text = ""
-    converter = DocumentConverter()
-    for pdf in pdf_docs:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-            tmp_file.write(pdf.read())
-            tmp_file_path = tmp_file.name
-        try:
-            result = converter.convert(tmp_file_path)
-            text += result.document.export_to_markdown()
-        finally:
-            os.remove(tmp_file_path)
+    # converter = DocumentConverter()
+    # for pdf in pdf_docs:
+    #     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+    #         tmp_file.write(pdf.read())
+    #         tmp_file_path = tmp_file.name
+    #     try:
+    #         result = converter.convert(tmp_file_path)
+    #         text += result.document.export_to_markdown()
+    #     finally:
+    #         os.remove(tmp_file_path)
     return text
 
 def get_text_chunks(text):
