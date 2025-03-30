@@ -1,5 +1,4 @@
 langchain
-docling
 streamlit
 faiss-cpu
 langchain-community
