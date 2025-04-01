@@ -117,10 +117,10 @@ def main():
         st.session_state.conversation = get_conversation_chain(existing_vectorstore)
 
     with st.sidebar:
-        st.subheader("Upload Your PDFs (Optional)")
-        pdf_docs = st.file_uploader("Upload PDFs here", accept_multiple_files=True)
+        st.subheader("Upload Your PDFs/DOCXs (Optional)")
+        pdf_docs = st.file_uploader("Upload Files here", accept_multiple_files=True)
         
-        if st.button("Process PDFs") and pdf_docs:
+        if st.button("Process Files") and pdf_docs:
             with st.spinner("Processing documents..."):
                 raw_text = get_text(pdf_docs)
                 text_chunks = get_text_chunks(raw_text)
