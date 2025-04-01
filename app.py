@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-# from docling.document_converter import DocumentConverter
+from docling.document_converter import DocumentConverter
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain.memory import ConversationBufferMemory
@@ -16,16 +16,16 @@ VECTORSTORE_PATH = "vectorstore.index"
 
 def get_pdf_text(pdf_docs):
     text = ""
-    # converter = DocumentConverter()
-    # for pdf in pdf_docs:
-    #     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-    #         tmp_file.write(pdf.read())
-    #         tmp_file_path = tmp_file.name
-    #     try:
-    #         result = converter.convert(tmp_file_path)
-    #         text += result.document.export_to_markdown()
-    #     finally:
-    #         os.remove(tmp_file_path)
+    converter = DocumentConverter()
+    for pdf in pdf_docs:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+            tmp_file.write(pdf.read())
+            tmp_file_path = tmp_file.name
+        try:
+            result = converter.convert(tmp_file_path)
+            text += result.document.export_to_markdown()
+        finally:
+            os.remove(tmp_file_path)
     return text
 
 def get_text_chunks(text):
