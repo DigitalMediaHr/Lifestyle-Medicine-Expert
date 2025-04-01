@@ -4,3 +4,4 @@ faiss-cpu
 langchain-community
 langchain-openai
 python-dotenv
+docling
