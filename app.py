@@ -14,18 +14,32 @@ load_dotenv()
 
 VECTORSTORE_PATH = "vectorstore.index"
 
-def get_pdf_text(pdf_docs):
+def get_text(pdf_docs):
     text = ""
     converter = DocumentConverter()
     for pdf in pdf_docs:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-            tmp_file.write(pdf.read())
-            tmp_file_path = tmp_file.name
-        try:
-            result = converter.convert(tmp_file_path)
-            text += result.document.export_to_markdown()
-        finally:
-            os.remove(tmp_file_path)
+        file_extension = os.path.splitext(pdf.name)[1].lower()
+        if file_extension == ".pdf":
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+                tmp_file.write(pdf.read())
+                tmp_file_path = tmp_file.name
+            try:
+                result = converter.convert(tmp_file_path)
+                text += result.document.export_to_markdown()
+            finally:
+                os.remove(tmp_file_path)
+        elif file_extension == ".docx":
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp_file:
+                tmp_file.write(pdf.read())
+                tmp_file_path = tmp_file.name
+            try:
+                result = converter.convert(tmp_file_path)
+                text += result.document.export_to_markdown()
+            finally:
+                os.remove(tmp_file_path)
+        else:
+            print(f"Unsupported file type: {file_extension}")
+    
     return text
 
 def get_text_chunks(text):
@@ -108,7 +122,7 @@ def main():
         
         if st.button("Process PDFs") and pdf_docs:
             with st.spinner("Processing documents..."):
-                raw_text = get_pdf_text(pdf_docs)
+                raw_text = get_text(pdf_docs)
                 text_chunks = get_text_chunks(raw_text)
                 vectorstore = get_vectorstore(text_chunks, existing_vectorstore)
                 st.session_state.vectorstore = vectorstore
